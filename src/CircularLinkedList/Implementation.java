@@ -12,6 +12,55 @@ public class Implementation {
 		printCircularLL(head);
 		head = insertAtHead(head, 5);
 		printCircularLL(head);
+		head = insertAtTail(head, 40);
+		printCircularLL(head);
+		head = deleteFromHead(head);
+		printCircularLL(head);
+		head = deleteKthNode(head, 3);
+		printCircularLL(head);
+	}
+	
+	public static Node deleteKthNode (Node head, int k) {
+		if (k == 1) {
+			return deleteFromHead(head);
+		}
+		else {
+			Node curr = head;
+			for (int i=0; i<k-2; i++) {
+				curr = curr.next;
+			}
+			curr.next = curr.next.next;
+			return head;
+		}
+	}
+	
+	public static Node deleteFromHead (Node head) {
+		if (head.next == head) {
+			return null;
+		}
+		else {
+//			Naive solution will be traversing till the end and changing the next pointer
+			head.data = head.next.data;
+			head.next = head.next.next;
+			return head;
+		}
+	}
+	
+	public static Node insertAtTail (Node head, int x) {
+		Node newNode = new Node(x);
+		if (head == null) {
+			newNode.next = newNode;
+			return newNode;
+		}
+		else {
+//			Naive Solution will be traversing till the end and inserting the newNode there
+			int y = head.data;
+			head.data = x;
+			newNode.data = y;
+			newNode.next = head.next;
+			head.next = newNode;
+			return newNode;
+		}
 	}
 	
 	public static Node insertAtHead (Node head, int x) {
@@ -49,7 +98,7 @@ public class Implementation {
 			System.out.println(curr.data);
 			curr = curr.next;
 		} while (curr != head);
-		
+		System.out.println("===========");
 	}
 	
 }
