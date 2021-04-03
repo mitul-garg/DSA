@@ -14,6 +14,7 @@ public class Implementation {
 		root.right.right = new Node(70);
 		
 		inorder(root);
+		// Inorder Traversal is always Sorted
 		System.out.println();
 		
 		preorder(root);
