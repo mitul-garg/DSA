@@ -14,7 +14,7 @@ public class Implementation {
 		root.right.right = new Node(70);
 		
 		inorder(root);
-		// Inorder Traversal is always Sorted
+		// In order Traversal is always Sorted
 		System.out.println();
 		
 		preorder(root);
@@ -32,6 +32,29 @@ public class Implementation {
 		iterativeInorder(root);
 		
 		iterativePreorder(root);
+	}
+	
+	// Have a look on GFG Article online for better understanding	
+	static void iterativePostorder (Node root) {
+		 	Stack<Node> st = new Stack<>();
+	        Node curr = root;
+	        while (true) {
+	            while (curr!=null) {
+	                st.push(curr);
+	                st.push(curr);
+	                curr = curr.left;
+	            }
+	            if (st.isEmpty())
+	                return;
+	            else
+	                curr = st.pop();
+	            if (!st.isEmpty() && st.peek()==curr)
+	                curr = curr.right;
+	            else {
+	                System.out.println(curr.key);
+	                curr = null;
+	            }
+	        }
 	}
 	
 	static void iterativePreorder (Node root) {
