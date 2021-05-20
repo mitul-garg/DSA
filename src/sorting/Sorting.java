@@ -16,18 +16,34 @@ public class Sorting {
 //		mergeSort(arr, 0, arr.length-1);
 //		naivePartition(arr, 5, 0, 8);
 //		lomutoPartition(arr, 0, 6, 3);
-		hoarePartition(arr, 0, 6, 1);
+//		hoarePartition(arr, 0, 6, 1);
+//		qSortLomuto(arr, 0, 6);
+		qSortHoare(arr, 0, 6);
 		printArray(arr);
 	}
 	
-	public static void hoarePartition (int[] arr, int l, int h, int p) {
+	public static void qSortHoare (int[] arr, int l, int h) {
+		if (l < h) {
+			int p = hoarePartition(arr, l, h);
+			qSortLomuto(arr, l, p);
+			qSortLomuto(arr, p+1, h);
+		}
+	}
+	public static void qSortLomuto (int[] arr, int l, int h) {
+		if (l < h) {
+			int p = lomutoPartition(arr, l, h);
+			qSortLomuto(arr, l, p-1);
+			qSortLomuto(arr, p+1, h);
+		}
+	}
+	public static int hoarePartition (int[] arr, int l, int h, int p) {
 //		pivot element index is given so we swap it with first element and perform the normal hoare partition
 		int temp = arr[l];
 		arr[l] = arr[p];
 		arr[p] = temp;
-		hoarePartition(arr, l, h);
+		return hoarePartition(arr, l, h);
 	}
-	public static void hoarePartition (int[] arr, int l, int h) {
+	public static int hoarePartition (int[] arr, int l, int h) {
 		int pivot = arr[l]; //Considering the first element always as pivot
 		int i = l-1, j = h+1;
 		while (true) {
@@ -38,22 +54,21 @@ public class Sorting {
 				j--;
 			} while (arr[j] > pivot);
 			if (i >= j) {
-				System.out.println("Partition is at : " + j);
-				return;
+				return j;
 			}
 			int temp = arr[i];
 			arr[i] = arr[j];
 			arr[j] = temp;
 		}
 	}
-	public static void lomutoPartition (int[] arr, int l, int h, int p) {
+	public static int lomutoPartition (int[] arr, int l, int h, int p) {
 //		pivot element index is given so we swap it with last element and perform the normal lomuto partition
 		int temp = arr[h];
 		arr[h] = arr[p];
 		arr[p] = temp;
-		lomutoPartition(arr, l, h);
+		return lomutoPartition(arr, l, h);
 	}
-	public static void lomutoPartition (int[] arr, int l, int h) {
+	public static int lomutoPartition (int[] arr, int l, int h) {
 //		O(n) Time and O(1) Aux Space
 		int pivot = arr[h]; //Considering the last element always as pivot
 		int i = l-1;
@@ -68,7 +83,7 @@ public class Sorting {
 		int temp = arr[i+1];
 		arr[i+1] = arr[h];
 		arr[h] = temp;
-		System.out.println("Pivot element is at : " + (i+1));
+		return (i+1);
 	}
 	public static void naivePartition (int[] arr, int p, int l, int h) {
 //		O(nlogn) Time and O(n) Aux Space
