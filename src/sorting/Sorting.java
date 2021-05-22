@@ -1,12 +1,15 @@
 package sorting;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 // Heap Sort karna hei abhi, yaad rkhna
 
 public class Sorting {
 
 	public static void main(String[] args) {
-//		int[] arr = {1, 2, 4, 10, 9, 7, 3, 2, 1};
-		int[] arr = {65, 80, 30, 90, 40, 50, 70};
+		int[] arr = {1, 2, 4, 10, 9, 7, 3, 2, 1};
+//		int[] arr = {65, 80, 30, 90, 40, 50, 70};
 		printArray(arr);
 //		bubbleSort(arr);
 //		optimisedBubbleSort(arr);
@@ -20,8 +23,84 @@ public class Sorting {
 //		lomutoPartition(arr, 0, 6, 3);
 //		hoarePartition(arr, 0, 6, 1);
 //		qSortLomuto(arr, 0, 6);
-		qSortHoare(arr, 0, 6);
+//		qSortHoare(arr, 0, 6);
+//		countingSort(arr, 9, 11);
+//		radixSort(arr);
+		bucketSort(arr, 4);
 		printArray(arr);
+	}
+	
+	public static void bucketSort (int[] arr, int k) {
+		int n = arr.length;
+		int max_val = arr[0];
+		for (int i=1; i<n; i++) 
+			max_val = Math.max(max_val, arr[i]);
+		max_val++; // so that the appropriate indexes for maximum elements exist
+		ArrayList<ArrayList<Integer>> bkt = new ArrayList<>();
+		for (int i=0; i<k; i++) {
+			bkt.add(new ArrayList<>());
+		}
+		for (int i=0; i<n; i++) {
+			int bi = (k*arr[i])/max_val;
+			bkt.get(bi).add(arr[i]);
+		}
+		for (int i=0; i<k; i++) {
+			Collections.sort(bkt.get(i));
+		}
+		int index = 0;
+		for (int i=0; i<k; i++) {
+			for (int j=0; j<bkt.get(i).size(); j++) {
+				arr[index++] = bkt.get(i).get(j);
+			}
+		}
+	}
+	
+	public static void radixSort (int[] arr) {
+		int n = arr.length;
+		int mx = arr[0];
+		for (int i=1; i<n; i++) {
+			if (arr[i] > mx)
+				mx = arr[i];
+		}
+		for (int exp=1; mx/exp>0; exp*=10) {
+			countingSortForRadixSort(arr,n,exp);
+		}
+	}
+	public static void countingSortForRadixSort (int[] arr, int n, int exp) {
+		int[] count = new int[10], output = new int[n];
+		for (int i=0; i<n; i++) {
+			count[(arr[i]/exp)%10]++;
+		}
+		for (int i=1; i<10; i++) {
+			count[i] = count[i] + count[i-1];
+		}
+		for (int i=n-1; i>=0; i--) {
+			output[count[(arr[i]/exp)%10]-1] = arr[i];
+			count[(arr[i]/exp)%10]--;
+		}
+		for (int i=0; i<n; i++) {
+			arr[i] = output[i];
+		}
+	}
+	
+	public static void countingSort (int[] arr, int n, int k) {
+		// Time Complexity and Auxiliary Space of O(n+k)
+		int[] count = new int[k];
+		for (int i=0; i<n; i++) 
+			count[arr[i]]++;
+//		printArray(count);
+		// number of smaller or equal elements than the current element
+		for (int i=1; i<k; i++) 
+			count[i] = count[i-1] + count[i];
+		int[] output = new int[n];
+		// loop is reversed in order to maintain stablitiy of the sort
+		for (int i=n-1; i>=0; i--) {
+			output[count[arr[i]]-1] = arr[i];
+			count[arr[i]]--;
+		}
+		for (int i=0; i<n; i++) {
+			arr[i] = output[i];
+		}
 	}
 	
 	public static void qSortHoare (int[] arr, int l, int h) {
