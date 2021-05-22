@@ -1,5 +1,7 @@
 package sorting;
 
+// Heap Sort karna hei abhi, yaad rkhna
+
 public class Sorting {
 
 	public static void main(String[] args) {
